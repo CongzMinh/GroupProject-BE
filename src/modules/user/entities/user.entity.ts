@@ -43,7 +43,7 @@ export class UserEntity {
   phoneNumber?: string;
 
   @Column({
-    nullable: true,
+  nullable: true,
   })
   @Expose()
   password: string;
