@@ -1,0 +1,27 @@
+version: '3'
+services:
+  postgres:
+    image: postgis/postgis:15-master
+    container_name: postgis-slihome
+    restart: always
+    ports:
+      - '5430:5432'
+    environment:
+      POSTGRES_USER: ${POSTGRESQL_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRESQL_PASSWORD}
+      POSTGRES_DB: ${POSTGRESQL_DATABASE}
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    security_opt:
+      - seccomp:unconfined
+
+  redis:
+    image: redis:latest
+    container_name: redis-slihome
+    restart: always
+    ports:
+      - '6370:6379'
+    volumes:
+      - ./redis-data:/data
+    security_opt:
+      - seccomp:unconfined

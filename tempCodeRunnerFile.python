@@ -1,0 +1,39 @@
+import math
+ 
+# step 1
+p = 211
+q = 97
+ 
+# step 2
+n = p*q
+print("n =", n)
+ 
+# step 3
+phi = (p-1)*(q-1)
+ 
+# step 4
+e = 89
+while(e<phi):
+    if (math.gcd(e, phi) == 1):
+        break
+    else:
+        e += 1
+ 
+print("e =", e)
+# step 5
+# step 5
+k = 2
+d = pow(e, -1, phi)  # Compute modular inverse of e (d ≡ e^(-1) mod phi)
+print("d =", d)
+ 
+# plain text
+msg = 5022
+print(f'Original message:{msg}')
+ 
+# encryption
+C = pow(msg, e, n)
+print(f'Encrypted message: {C}')
+
+# decryption
+M = pow(C, d, n)
+print(f'Decrypted message: {M}')
