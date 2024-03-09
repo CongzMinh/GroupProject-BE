@@ -24,8 +24,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { storageConfig } from 'src/configs/multer.config';
 import { extname } from 'path';
 import { UserService } from './user.service';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { UpdatePasswordDto } from './dto/update-password.dto';
+
 
 @Controller('user')
 @ApiTags('Users')
