@@ -80,9 +80,7 @@ export class UserEntity {
   @Expose()
   updatedAt: Date;
 
-  @DeleteDateColumn({
-    name: 'deleted_at',
-  })
+
   @Expose()
   deletedAt?: Date;
 
