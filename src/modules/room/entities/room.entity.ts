@@ -13,8 +13,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from 'src/modules/user/entities/user.entity';
-import { CommentEntity, IssueEntity } from './issue.entity';
-import { ContractEntity, FavoritePostEntity } from './contract.entity';
+import { IssueEntity } from './issue.entity';
+import { ContractEntity } from './contract.entity';
 
 @Entity({
   name: 'rooms',

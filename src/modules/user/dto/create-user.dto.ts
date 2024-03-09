@@ -29,9 +29,9 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   year_start: number;
-  
+
   @IsNotEmpty()
-  year_end: number;
+  year_graduated: number;
 
   @ApiProperty({
     description: 'Password in plain text',

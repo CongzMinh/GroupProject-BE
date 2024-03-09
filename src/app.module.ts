@@ -13,9 +13,8 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { ThrottlerExampleModule } from './modules/throttler/throttler.module';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
-import { RoomModule } from './modules/room/room.module';
 
-import { PostModule } from './modules/room/room.module';
+import { RoomModule } from './modules/room/room.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { AuthModule } from './modules/auth/auth.module';
 
@@ -54,11 +53,10 @@ import { AuthModule } from './modules/auth/auth.module';
         },
       }),
     }),
-    PostModule,
+    RoomModule,
     MulterModule.register({
       dest: './files',
     }),
-    RoomModule,
     AuthModule,
     UserModule,
   ],
