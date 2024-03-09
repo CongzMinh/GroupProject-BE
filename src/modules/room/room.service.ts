@@ -10,6 +10,7 @@ import { IssueRepository } from './repositories/issue.repository';
 
 @Injectable()
 export class RoomService {
+<<<<<<< HEAD
   // constructor(
   //   private roomRepo: RoomRepository,
   //   private issueRepo: IssueRepository,) {}
@@ -36,4 +37,32 @@ export class RoomService {
   // }
 
   // async createIssue(userId: number, )
+=======
+  constructor(
+    private roomRepo: RoomRepository,
+    private issueRepo: IssueRepository,) {}
+
+  async getAll() {
+    const rooms = await this.roomRepo.find();
+
+    if (!rooms) {
+      throw new NotFoundException();
+    }
+    return rooms;
+  }
+
+  async getOneById(id: number) {
+    const room = await this.roomRepo.findOne({
+      where: { id: id },
+      relations: ['user'],
+    });
+
+    if (!room) {
+      throw new NotFoundException();
+    }
+    return room;
+  }
+
+  async createIssue(userId: number, )
+>>>>>>> main
 }
