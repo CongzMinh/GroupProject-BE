@@ -1,50 +1,49 @@
-// import {
-//   Controller,
-//   Get,
-//   Body,
-//   Request,
-//   Param,
-//   Delete,
-//   UseGuards,
-//   ParseIntPipe,
-//   Put,
-//   UploadedFile,
-//   UseInterceptors,
-//   BadRequestException,
-//   Req,
-//   Res,
-// } from '@nestjs/common';
-// import { UpdateUserDto } from './dto/update-user.dto';
-// import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-// import { GetUser } from 'src/shared/decoratos/get-request-user.decorator';
-// import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-// import { RolesGuard } from '../auth/roles.guard';
-// import { CurrentUser } from './decorators/currentUser.decorator';
-// import { UserEntity } from './entities/user.entity';
-// import { UpdatePasswordDto } from './dto/update-password.dto';
-// import { FileInterceptor } from '@nestjs/platform-express';
-// import { storageConfig } from 'src/configs/multer.config';
-// import { extname } from 'path';
-// import { UserService } from './user.service';
+import {
+  Controller,
+  Get,
+  Body,
+  Request,
+  Param,
+  Delete,
+  UseGuards,
+  ParseIntPipe,
+  Put,
+  UploadedFile,
+  UseInterceptors,
+  BadRequestException,
+  Req,
+  Res,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { GetUser } from 'src/shared/decoratos/get-request-user.decorator';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { RolesGuard } from '../auth/roles.guard';
+import { CurrentUser } from './decorators/currentUser.decorator';
+import { UserEntity } from './entities/user.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { storageConfig } from 'src/configs/multer.config';
+import { extname } from 'path';
+import { UserService } from './user.service';
 
-// @Controller('user')
-// @ApiTags('Users')
-// @ApiBearerAuth()
-// export class UserController {
-//   constructor(private readonly userService: UserService) {}
 
-//   @UseGuards(JwtAuthGuard, RolesGuard)
-//   @Get()
-//   // @LogExecutionTime()
-//   async findAll(@GetUser() user) {
-//     console.log('========= user : ', user);
-//     return this.userService.findAll();
-//   }
+@Controller('user')
+@ApiTags('Users')
+@ApiBearerAuth()
+export class UserController {
+  constructor(private readonly userService: UserService) {}
 
-//   @Get(':id')
-//   findOne(@Param('id') id: string) {
-//     return this.userService.findOne(+id);
-//   }
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Get()
+  // @LogExecutionTime()
+  async findAll(@GetUser() user) {
+    console.log('========= user : ', user);
+    return this.userService.findAll();
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.userService.findOne(+id);
+  }
 
 //   @Get('uploaded/:avatarpth')
 //   seeUploadedFile(@Param('avatarpth') image: string, @Res() res: any) {
@@ -110,8 +109,8 @@
 //     return this.userService.removeAvatar(id, currentUser);
 //   }
 
-//   @Delete(':id')
-//   remove(@Param('id') id: string) {
-//     return this.userService.remove(+id);
-//   }
-// }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.userService.remove(+id);
+  }
+}

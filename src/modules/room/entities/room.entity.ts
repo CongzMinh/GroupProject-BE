@@ -5,16 +5,15 @@ import {
   DeleteDateColumn,
   Entity,
   JoinTable,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  RelationId,
   UpdateDateColumn,
 } from 'typeorm';
 import { UserEntity } from 'src/modules/user/entities/user.entity';
-import { CommentEntity, IssueEntity } from './issue.entity';
-import { ContractEntity, FavoritePostEntity } from './contract.entity';
+import { IssueEntity } from './issue.entity';
+import { ContractEntity } from './contract.entity';
+import { PaymentEntity } from './payment.entity';
 
 @Entity({
   name: 'rooms',
@@ -31,6 +30,15 @@ export class RoomEntity {
 
   @Column()
   price: number;
+
+  @Column()
+  electricity: number;
+
+  @Column()
+  water: number;
+
+  @Column()
+  wifi: number;
 
   @Column()
   deadline: number;
@@ -59,8 +67,8 @@ export class RoomEntity {
   @Expose()
   deletedAt?: Date;
 
-  @OneToMany(() => UserEntity, (user) => user.room)
-  @Transform(({ obj }) => obj.user.id)
+  @OneToMany(() => UserEntity, (user) => user.room, { nullable: true })
+  @Transform(({ obj }) => obj.users?.map((user) => user.id))
   users: UserEntity[];
 
   @OneToMany(() => IssueEntity, (issue) => issue.room)
@@ -68,4 +76,7 @@ export class RoomEntity {
 
   @ManyToOne(() => ContractEntity, (contract) => contract.rooms)
   contract: ContractEntity;
+
+  @OneToMany(() => PaymentEntity, (payment) => payment.room)
+  payments: PaymentEntity[];
 }

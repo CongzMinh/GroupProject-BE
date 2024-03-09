@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinTable,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -90,6 +91,7 @@ export class UserEntity {
   room: RoomEntity;
 
   @OneToMany(() => IssueEntity, (issue) => issue.user)
+  @JoinTable()
   issues: IssueEntity[];
 
   @ManyToOne(() => ContractEntity, (contract) => contract.users)

@@ -1,49 +1,47 @@
-// import {
-//   BadRequestException,
-//   ForbiddenException,
-//   Injectable,
-//   NotFoundException,
-// } from '@nestjs/common';
-// import { CreateUserDto } from './dto/create-user.dto';
-// import { UpdateUserDto } from './dto/update-user.dto';
-// import { UserEntity } from './entities/user.entity';
-// import { UserRepository } from './repositories/user.repository';
-// import { UpdatePasswordDto } from './dto/update-password.dto';
-// import * as bcrypt from 'bcrypt';
-// import * as fs from 'fs';
+import {
+  BadRequestException,
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UserEntity } from './entities/user.entity';
+import { UserRepository } from './repositories/user.repository';
+import * as bcrypt from 'bcrypt';
+import * as fs from 'fs';
 
-// @Injectable()
-// export class UserService {
-//   constructor(private userRepo: UserRepository) {}
+@Injectable()
+export class UserService {
+  constructor(private userRepo: UserRepository) {}
 
-//   createUser(createUserDto: CreateUserDto) {
-//     const createdUser = this.userRepo.create(createUserDto);
-//     return this.userRepo.save(createdUser);
-//   }
+  createUser(createUserDto: CreateUserDto) {
+    const createdUser = this.userRepo.create(createUserDto);
+    return this.userRepo.save(createdUser);
+  }
 
-//   findAll() {
-//     return this.userRepo.find();
-//   }
+  findAll() {
+    return this.userRepo.find();
+  }
 
-//   findOne(id: number) {
-//     return this.userRepo.findOneBy({ id });
-//   }
+  findOne(id: number) {
+    return this.userRepo.findOneBy({ id });
+  }
 
-//   findByEmail(email: string) {
-//     return this.userRepo.findOne({
-//       where: {
-//         email,
-//       },
-//     });
-//   }
+  findByEmail(email: string) {
+    return this.userRepo.findOne({
+      where: {
+        email,
+      },
+    });
+  }
 
-//   findByPhoneNumber(phoneNumber: string) {
-//     return this.userRepo.findOne({
-//       where: {
-//         phoneNumber,
-//       },
-//     });
-//   }
+  findByPhoneNumber(phoneNumber: string) {
+    return this.userRepo.findOne({
+      where: {
+        phoneNumber,
+      },
+    });
+  }
 
 //   async updateUser(
 //     id: number,
@@ -140,7 +138,7 @@
 //     }
 //   }
 
-//   remove(id: number) {
-//     return `This action removes a #${id} user`;
-//   }
-// }
+  remove(id: number) {
+    return `This action removes a #${id} user`;
+  }
+}
