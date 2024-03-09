@@ -20,6 +20,9 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 
+  @IsNotEmpty()
+  Student_ID: string;
+
   @IsOptional()
   @IsPhoneNumber()
   phoneNumber: string;

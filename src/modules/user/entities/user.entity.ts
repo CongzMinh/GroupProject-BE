@@ -42,6 +42,9 @@ export class UserEntity {
   @Expose()
   phoneNumber?: string;
 
+  @Column()
+  DoB: string;
+
   @Column({
   nullable: true,
   })
@@ -77,12 +80,10 @@ export class UserEntity {
   @UpdateDateColumn({
     name: 'updated_at',
   })
+
   @Expose()
   updatedAt: Date;
 
-
-  @Expose()
-  deletedAt?: Date;
 
   @ManyToOne(() => RoomEntity, (room) => room.users)
   room: RoomEntity;
