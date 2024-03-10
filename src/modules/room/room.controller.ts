@@ -144,6 +144,11 @@ export class PostController {
     return this.roomService.createIssue(userId, roomId, createIssueDto);
   }
 
+  @Delete('remove/:issueId')
+  removeIssue(@Param('issueId') issueId: number) {
+    return this.roomService.removeIssue(issueId);
+  }
+
   @Post('create-contract')
   async createContract(@Body() createContractDto: CreateContractDto) {
     return this.roomService.addContract(createContractDto);

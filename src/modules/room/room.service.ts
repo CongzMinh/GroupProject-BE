@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -38,7 +39,7 @@ export class RoomService {
   async getOneById(id: number) {
     const room = await this.roomRepo.findOne({
       where: { id: id },
-      relations: ['users'],
+      relations: ["users"],
     });
 
     if (!room) {
@@ -66,6 +67,16 @@ export class RoomService {
     return this.issueRepo.save(issue);
   }
 
+  async removeIssue(issueId: number) {
+    const result = await this.issueRepo.findOne({ where: { id: issueId } });
+
+    if (!result) {
+      throw new NotFoundException(`Issue with ID "${issueId}" not found`);
+    }
+
+    return this.issueRepo.remove(result);
+  }
+
   async addContract(createContractDto: CreateContractDto): Promise<RoomEntity> {
     const room = await this.roomRepo.findOne({
       where: { id: createContractDto.roomId },
@@ -75,6 +86,10 @@ export class RoomService {
       throw new NotFoundException(
         `Room with id ${createContractDto.roomId} not found`,
       );
+    }
+
+    if (room.users.length >= room.capacity) {
+      throw new BadRequestException("The room is already full");
     }
 
     const user = await this.userService.findOne(createContractDto.userId);
@@ -88,6 +103,26 @@ export class RoomService {
     await this.contractRepo.save(newContract);
 
     room.users.push(user);
+    return this.roomRepo.save(room);
+  }
+
+  async removeUserFromRoom(userId: number, roomId) {
+    const room = await this.roomRepo.findOne({
+      where: { id: roomId },
+      relations: ["users"],
+    });
+    if (!room) {
+      throw new NotFoundException(`Room with id ${roomId} not found`);
+    }
+
+    const userIndex = room.users.findIndex((user) => user.id === userId);
+    if (userIndex === -1) {
+      throw new NotFoundException(
+        `Student with id ${userId} not found in the room`,
+      );
+    }
+
+    room.users.splice(userIndex, 1);
     return this.roomRepo.save(room);
   }
 }
