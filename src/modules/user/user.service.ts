@@ -11,6 +11,8 @@ import * as bcrypt from 'bcrypt';
 import * as fs from 'fs';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { SearchUserDto } from './dto/search-user.dto';
+import { ILike } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -54,6 +56,7 @@ export class UserService {
     });
   }
 
+
   async updateUser(
     id: number,
     updateUserDto: UpdateUserDto,
@@ -69,9 +72,9 @@ export class UserService {
     }
 
     user.name = updateUserDto.name;
-    user.email = updateUserDto.email;
     user.phoneNumber = updateUserDto.phoneNumber;
     user.Student_ID = updateUserDto.Student_ID;
+    user.DoB = updateUserDto.DoB;
 
     return this.userRepo.save(user);
   }
@@ -101,5 +104,28 @@ export class UserService {
     user.password = await bcrypt.hash(updatePasswordDto.newPassword, salt);
     return this.userRepo.save(user);
   }
+
+  
+  async searchUser(searchUserDto: SearchUserDto): Promise<UserEntity[]> {
+    const { name, Student_ID } = searchUserDto;
+  
+    if (name) {
+      console.log('Search Name:', { name: ILike(`%${name}%`) });
+      return this.userRepo.find({
+        where: { name: ILike(`%${name}%`) },
+      });
+    }
+  
+    if (Student_ID) {
+      console.log('Search StudentID:', { Student_ID: ILike(`%${Student_ID}%`) });
+      return this.userRepo.find({
+        where: { Student_ID: ILike(`%${Student_ID}%`) },
+      });
+    }
+    return this.userRepo.find();
+  }
+  
+
+
 
 }

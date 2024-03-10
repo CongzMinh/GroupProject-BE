@@ -5,10 +5,6 @@ export class UpdateUserDto {
     name: string;
   
     @IsOptional()
-    @IsEmail()
-    email: string;
-  
-    @IsOptional()
     @IsPhoneNumber()
     phoneNumber: string;
   
@@ -18,7 +14,4 @@ export class UpdateUserDto {
     @IsNotEmpty()
     Student_ID: string;
 
-
-    @IsNotEmpty()
-    password: string;
   }

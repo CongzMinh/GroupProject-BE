@@ -71,8 +71,6 @@ export class UserEntity {
     name: 'is_locked',
     default: false,
   })
-  @Expose()
-  isLocked: boolean;
 
   @CreateDateColumn({
     name: 'created_at',

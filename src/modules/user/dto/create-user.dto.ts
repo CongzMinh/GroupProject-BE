@@ -23,7 +23,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   Student_ID: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsPhoneNumber()
   phoneNumber: string;
 
@@ -44,9 +44,8 @@ export class CreateUserDto {
   password: string;
 
   @IsNotEmpty()
-  isHost: boolean;
-
-  role: Role;
+  isHost:boolean;
+  role: Role; 
 
   @IsNotEmpty()
   gender: Gender;

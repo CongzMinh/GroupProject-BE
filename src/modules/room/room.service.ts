@@ -69,7 +69,7 @@ export class RoomService {
   async addContract(createContractDto: CreateContractDto): Promise<RoomEntity> {
     const room = await this.roomRepo.findOne({
       where: { id: createContractDto.roomId },
-      relations: ["users"],
+      relations: ['users'],
     });
     if (!room) {
       throw new NotFoundException(

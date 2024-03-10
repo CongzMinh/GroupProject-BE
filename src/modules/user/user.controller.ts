@@ -13,6 +13,8 @@ import {
   BadRequestException,
   Req,
   Res,
+  Post,
+  Query,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { GetUser } from 'src/shared/decoratos/get-request-user.decorator';
@@ -26,6 +28,7 @@ import { extname } from 'path';
 import { UserService } from './user.service';
 import { UpdatePasswordDto } from './dto/update-password.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { SearchUserDto } from './dto/search-user.dto';
 
 
 @Controller('user')
@@ -47,50 +50,28 @@ export class UserController {
     return this.userService.findOne(+id);
   }
 
-  // @Get('uploaded/:avatarpth')
-  // seeUploadedFile(@Param('avatarpth') image: string, @Res() res: any) {
-  //   return res.sendFile(image, { root: 'uploads/avatar' });
-  // }
-
-  // @UseGuards(JwtAuthGuard)
-  // @UseInterceptors(
-  //   FileInterceptor('avatar', {
-  //     storage: storageConfig('avatar'),
-  //     fileFilter: (req, file, cb) => {
-  //       const ext = extname(file.originalname);
-  //       const allowedExtArr = ['.jpg', '.png', '.jpeg'];
-  //       if (!allowedExtArr.includes(ext)) {
-  //         req.fileValidationError = `Wrong extention type. Accepted file ext are: ${allowedExtArr}`;
-  //         cb(null, false);
-  //       } else {
-  //         const fileSize = parseInt(req.headers['content-length']);
-  //         if (fileSize > 1024 * 1024 * 5) {
-  //           req.fileValidationError = 'File size is too large';
-  //           cb(null, false);
-  //         } else {
-  //           cb(null, true);
-  //         }
-  //       }
-  //     },
-  //   }),
-  // )
 
 
+  @UseGuards(JwtAuthGuard)
+  @Get('search')
+  searchUser(
+    @Body() searchUserDto: SearchUserDto
+    ): Promise<UserEntity[]> {
+    return this.userService.searchUser(searchUserDto);
+  }
+
+
+
+
+  
+  @UseGuards(JwtAuthGuard)
   @Put('update-account')
   async updateUser(
-    @Request() req: any,
+    @Req() req: any,
     @CurrentUser() currentUser: UserEntity,
     @Body() updateUserDto: UpdateUserDto,
-    // @UploadedFile() file: Express.Multer.File,
   ) {
-    if (req.fileValidationError) {
-      throw new BadRequestException(req.fileValidationError);
-    }
     const id = req.user.id;
-    // if (file && file.filename) {
-    //   // If a file is uploaded, update the avatar
-    //   await this.userService.updateAvatar(id, file.filename, currentUser);
-    // }
     return this.userService.updateUser(id, updateUserDto, currentUser);
   }
 
@@ -105,13 +86,7 @@ export class UserController {
     return this.userService.updatePassword(id, updatePasswordDto, currentUser);
   }
 
-  
-//   @UseGuards(JwtAuthGuard)
-//   @Delete('avatar')
-//   deleteAvatar(@Req() req, @CurrentUser() currentUser: UserEntity) {
-//     const id = req.user.id;
-//     return this.userService.removeAvatar(id, currentUser);
-//   }
+
 
   @Delete(':id')
   remove(@Param('id') id: string) {
