@@ -53,7 +53,7 @@ export class UserController {
 
 
   @UseGuards(JwtAuthGuard)
-  @Get('search')
+  @Post('search')
   searchUser(
     @Body() searchUserDto: SearchUserDto
     ): Promise<UserEntity[]> {

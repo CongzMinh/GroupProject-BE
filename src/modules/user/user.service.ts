@@ -105,27 +105,25 @@ export class UserService {
     return this.userRepo.save(user);
   }
 
-  
   async searchUser(searchUserDto: SearchUserDto): Promise<UserEntity[]> {
     const { name, Student_ID } = searchUserDto;
   
+    let whereCondition = {};
     if (name) {
-      console.log('Search Name:', { name: ILike(`%${name}%`) });
-      return this.userRepo.find({
-        where: { name: ILike(`%${name}%`) },
-      });
+      whereCondition['name'] = ILike(`%${name}%`);
+    } else if (Student_ID) {
+      whereCondition['Student_ID'] = ILike(`%${Student_ID}%`);
     }
   
-    if (Student_ID) {
-      console.log('Search StudentID:', { Student_ID: ILike(`%${Student_ID}%`) });
-      return this.userRepo.find({
-        where: { Student_ID: ILike(`%${Student_ID}%`) },
-      });
-    }
-    return this.userRepo.find();
+    console.log('Search Criteria:', whereCondition);
+  
+    return this.userRepo.find({
+      where: whereCondition,
+      order: {
+        id: 'ASC',
+      },
+    });
   }
-  
-
 
 
 }
