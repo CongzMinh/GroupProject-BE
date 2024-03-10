@@ -15,6 +15,9 @@ export class UpdateUserDto {
     @IsNotEmpty()
     DoB: string;
 
+    @IsNotEmpty()
+    Student_ID: string;
+
 
     @IsNotEmpty()
     password: string;

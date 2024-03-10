@@ -5,7 +5,6 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinTable,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -43,8 +42,14 @@ export class UserEntity {
   @Expose()
   phoneNumber?: string;
 
+  @Column()
+  DoB: string;
+
+  @Column()
+  Student_ID: string;
+
   @Column({
-    nullable: true,
+  nullable: true,
   })
   @Expose()
   password: string;
@@ -78,20 +83,15 @@ export class UserEntity {
   @UpdateDateColumn({
     name: 'updated_at',
   })
+
   @Expose()
   updatedAt: Date;
 
-  @DeleteDateColumn({
-    name: 'deleted_at',
-  })
-  @Expose()
-  deletedAt?: Date;
 
   @ManyToOne(() => RoomEntity, (room) => room.users)
   room: RoomEntity;
 
   @OneToMany(() => IssueEntity, (issue) => issue.user)
-  @JoinTable()
   issues: IssueEntity[];
 
   @ManyToOne(() => ContractEntity, (contract) => contract.users)
