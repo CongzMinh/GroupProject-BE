@@ -1,26 +1,25 @@
 import { Module } from '@nestjs/common';
-<<<<<<< HEAD
-// import { PostService } from './room.service';
-=======
-import { PostService } from './room.service';
->>>>>>> main
+import { RoomService } from './room.service';
 import { PostController } from './room.controller';
 import { RoomRepository } from './repositories/room.repository';
 import { RolesGuard } from '../auth/roles.guard';
 import { UserRepository } from '../user/repositories/user.repository';
-<<<<<<< HEAD
-import { RoomService } from './room.service';
+import { IssueRepository } from './repositories/issue.repository';
+import { ContractRepository } from './repositories/contract.repository';
+import { PaymentRepository } from './repositories/payment.repository';
+import { UserService } from '../user/user.service';
 
 @Module({
-  providers: [RoomService, UserRepository, RoomRepository, RolesGuard],
+  providers: [
+    RoomService,
+    UserService,
+    UserRepository,
+    RoomRepository,
+    RolesGuard,
+    IssueRepository,
+    ContractRepository,
+    PaymentRepository,
+  ],
   controllers: [PostController],
 })
 export class RoomModule {}
-=======
-
-@Module({
-  providers: [PostService, UserRepository, RoomRepository, RolesGuard],
-  controllers: [PostController],
-})
-export class PostModule {}
->>>>>>> main

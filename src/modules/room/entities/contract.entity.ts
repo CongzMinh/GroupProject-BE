@@ -1,14 +1,6 @@
 import { UserEntity } from 'src/modules/user/entities/user.entity';
-import {
-  CreateDateColumn,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { RoomEntity } from './room.entity';
-import { Expose } from 'class-transformer';
 
 @Entity({
   name: 'contract',
@@ -17,17 +9,11 @@ export class ContractEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @CreateDateColumn({
-    name: 'created_at',
-  })
-  @Expose()
-  createdAt: Date;
+  @Column()
+  startDate: string;
 
-  @UpdateDateColumn({
-    name: 'updated_at',
-  })
-  @Expose()
-  updatedAt: Date;
+  @Column()
+  endDate: string;
 
   @OneToMany(() => RoomEntity, (room) => room.contract)
   rooms: RoomEntity[];
