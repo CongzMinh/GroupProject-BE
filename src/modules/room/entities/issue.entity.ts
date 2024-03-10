@@ -5,6 +5,7 @@ import {
   Column,
   ManyToOne,
   CreateDateColumn,
+  JoinTable,
 } from 'typeorm';
 import { RoomEntity } from './room.entity';
 @Entity({ name: 'issues' })
@@ -22,6 +23,7 @@ export class IssueEntity {
   user: UserEntity;
 
   @ManyToOne(() => RoomEntity, (room) => room.issues)
+  @JoinTable()
   room: RoomEntity;
 
   @CreateDateColumn({
