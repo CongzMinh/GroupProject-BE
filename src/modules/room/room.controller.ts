@@ -27,6 +27,8 @@ import { RoomService } from './room.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { CreateIssueDto } from './dto/create-issue.dto';
 import { CreateContractDto } from './dto/create-contract.dto';
+import { SearchRoomDto } from './dto/search-room.dto';
+import { RoomEntity } from './entities/room.entity';
 
 @Controller('room')
 @ApiTags('Rooms')
@@ -80,6 +82,13 @@ export class PostController {
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.roomService.getOneById(id);
+  }
+
+  @Post('search')
+  searchRoomsByTitle(
+    @Body() searchRoomDto: SearchRoomDto,
+  ): Promise<RoomEntity[]> {
+    return this.roomService.searchRoomsByTitle(searchRoomDto);
   }
 
   // @Put(':id')

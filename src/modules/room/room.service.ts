@@ -9,13 +9,14 @@ import { RoomRepository } from "./repositories/room.repository";
 import { IssueRepository } from "./repositories/issue.repository";
 import { CreateIssueDto } from "./dto/create-issue.dto";
 import { CreateRoomDto } from "./dto/create-room.dto";
-import { DeepPartial } from "typeorm";
+import { DeepPartial, ILike } from "typeorm";
 import { IssueEntity } from "./entities/issue.entity";
 import { CreateContractDto } from "./dto/create-contract.dto";
 import { UserRepository } from "../user/repositories/user.repository";
 import { UserService } from "../user/user.service";
 import { RoomEntity } from "./entities/room.entity";
 import { ContractRepository } from "./repositories/contract.repository";
+import { SearchRoomDto } from "./dto/search-room.dto";
 
 @Injectable()
 export class RoomService {
@@ -90,4 +91,21 @@ export class RoomService {
     room.users.push(user);
     return this.roomRepo.save(room);
   }
+
+
+  async searchRoomsByTitle(
+    searchRoomDto: SearchRoomDto,
+  ): Promise<RoomEntity[]> {
+    const { title } = searchRoomDto;
+    console.log('Search Criteria:', { title: ILike(`%${title}%`) });
+
+    return this.roomRepo.find({
+      where: { title: ILike(`%${title}%`) },
+      order: {
+        id: 'ASC',
+      },
+    });
+  }
 }
+
+

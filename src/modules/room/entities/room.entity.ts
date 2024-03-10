@@ -23,6 +23,9 @@ export class RoomEntity {
   id: number;
 
   @Column()
+  title: string;
+  
+  @Column()
   capacity: number;
 
   @Column()

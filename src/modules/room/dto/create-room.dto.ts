@@ -1,4 +1,5 @@
 export class CreateRoomDto {
+  title: string;
   capacity: number;
   area: number;
   price: number;
