@@ -11,13 +11,14 @@ import { RoomRepository } from './repositories/room.repository';
 import { IssueRepository } from './repositories/issue.repository';
 import { CreateIssueDto } from './dto/create-issue.dto';
 import { CreateRoomDto } from './dto/create-room.dto';
-import { DeepPartial } from 'typeorm';
+import { DeepPartial, ILike } from 'typeorm';
 import { IssueEntity } from './entities/issue.entity';
 import { CreateContractDto } from './dto/create-contract.dto';
 import { UserRepository } from '../user/repositories/user.repository';
 import { UserService } from '../user/user.service';
 import { RoomEntity } from './entities/room.entity';
 import { ContractRepository } from './repositories/contract.repository';
+import { SearchRoomDto } from './dto/search-room.dto';
 
 
 @Injectable()
@@ -133,9 +134,10 @@ async createRoom(request: CreateRoomDto) {
   async removeIssue(id: number)  {
     const issue = await this.issueRepo.findOneBy({ id });
     return this.issueRepo.remove(issue);
+  }
 
 
-  async searchRoomsByTitle(
+ async searchRoomsByTitle(
     searchRoomDto: SearchRoomDto,
   ): Promise<RoomEntity[]> {
     const { title } = searchRoomDto;
@@ -147,7 +149,6 @@ async createRoom(request: CreateRoomDto) {
         id: 'ASC',
       },
     });
-
   }
 }
 
