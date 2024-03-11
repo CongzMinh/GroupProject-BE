@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToOne,
   OneToMany,
@@ -21,6 +22,9 @@ import { PaymentEntity } from './payment.entity';
 export class RoomEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @Column()
+  roomNumber: number;
 
   @Column()
   capacity: number;
@@ -46,8 +50,8 @@ export class RoomEntity {
   @Column()
   floor: number;
 
-  @Column()
-  status: string;
+  @Column({default: false})
+  available: boolean;
 
   @CreateDateColumn({
     name: 'created_at',
@@ -74,8 +78,11 @@ export class RoomEntity {
   @OneToMany(() => IssueEntity, (issue) => issue.room)
   issues: IssueEntity[];
 
-  @ManyToOne(() => ContractEntity, (contract) => contract.rooms)
-  contract: ContractEntity;
+  @OneToMany(() => ContractEntity, (contract) => contract.room, 
+    { cascade: ['insert'] },
+  )
+  @JoinColumn({ name: 'room_id' })
+  contracts: ContractEntity[];
 
   @OneToMany(() => PaymentEntity, (payment) => payment.room)
   payments: PaymentEntity[];

@@ -1,5 +1,14 @@
 import { UserEntity } from 'src/modules/user/entities/user.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from "typeorm";
 import { RoomEntity } from './room.entity';
 
 @Entity({
@@ -15,9 +24,11 @@ export class ContractEntity {
   @Column()
   endDate: string;
 
-  @OneToMany(() => RoomEntity, (room) => room.contract)
-  rooms: RoomEntity[];
+  @ManyToOne(() => RoomEntity, (room) => room.contracts)
+  @JoinColumn()
+  room: RoomEntity;
 
-  @OneToMany(() => UserEntity, (user) => user.contract)
-  users: UserEntity[];
+  @OneToOne(() => UserEntity, (user) => user.contract)
+  @JoinColumn()
+  user: UserEntity;
 }

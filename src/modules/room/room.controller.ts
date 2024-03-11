@@ -82,6 +82,11 @@ export class PostController {
     return this.roomService.getOneById(id);
   }
 
+  @Get('contract/:id')
+  getContract(@Param('id') id: number) {
+    return this.roomService.getContract(id);
+  }
+
   // @Put(':id')
   // @UseInterceptors(
   //   FilesInterceptor('image', 10, {
@@ -147,5 +152,10 @@ export class PostController {
   @Post('create-contract')
   async createContract(@Body() createContractDto: CreateContractDto) {
     return this.roomService.addContract(createContractDto);
+  }
+
+  @Delete('issue/:id')
+  removeIssue(@Param('id') issueId: number) {
+    return this.roomService.removeIssue(issueId);
   }
 }
