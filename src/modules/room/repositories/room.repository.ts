@@ -20,4 +20,6 @@ export class RoomRepository extends Repository<RoomEntity> {
       .where(`RoomEntity.${column} ${operator} :value`, { value: value })
       .getOne();
   }
+
+  
 }

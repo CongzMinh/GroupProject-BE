@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -67,30 +68,70 @@ export class RoomService {
     return this.issueRepo.save(issue);
   }
 
-  async addContract(createContractDto: CreateContractDto): Promise<RoomEntity> {
-    const room = await this.roomRepo.findOne({
-      where: { id: createContractDto.roomId },
-      relations: ['users'],
-    });
-    if (!room) {
-      throw new NotFoundException(
-        `Room with id ${createContractDto.roomId} not found`,
-      );
-    }
+  // async addContract(createContractDto: CreateContractDto): Promise<RoomEntity> {
+  //   const room = await this.roomRepo.findOne({
+  //     where: { id: createContractDto.roomId },
+  //     relations: ['users'],
+  //   });
+  //   if (!room) {
+  //     throw new NotFoundException(
+  //       `Room with id ${createContractDto.roomId} not found`,
+  //     );
+  //   }
 
-    const user = await this.userService.findOne(createContractDto.userId);
-    if (!user) {
-      throw new NotFoundException(
-        `Student with id ${createContractDto.userId} not found`,
-      );
-    }
+  //   const user = await this.userService.findOne(createContractDto.userId);
+  //   if (!user) {
+  //     throw new NotFoundException(
+  //       `Student with id ${createContractDto.userId} not found`,
+  //     );
+  //   }
 
-    const newContract = this.contractRepo.create(createContractDto);
-    await this.contractRepo.save(newContract);
+  //   const newContract = this.contractRepo.create(createContractDto);
+  //   await this.contractRepo.save(newContract);
 
-    room.users.push(user);
-    return this.roomRepo.save(room);
+  //   room.users.push(user);
+  //   return this.roomRepo.save(room);
+  // }
+
+// RoomService
+
+async addContract(createContractDto: CreateContractDto): Promise<RoomEntity> {
+  const room = await this.roomRepo.findOne({
+    where: { id: createContractDto.roomId },
+    relations: ['users'],
+  });
+
+  if (!room) {
+    throw new NotFoundException(`Room with id ${createContractDto.roomId} not found`);
   }
+
+  if (room.users.length >= room.capacity) {
+    throw new BadRequestException(`Room with id ${createContractDto.roomId} is full`);
+  }
+
+  // Sử dụng UserService để kiểm tra xem người dùng đã tồn tại và có hợp đồng nào chưa
+  const user = await this.userService.findUserWithContracts(createContractDto.userId);
+
+  if (!user) {
+    throw new NotFoundException(`User with id ${createContractDto.userId} not found`);
+  }
+
+  if (user.contracts && user.contracts.length > 0) {
+    throw new BadRequestException(`User with id ${createContractDto.userId} already has a contract`);
+  }
+
+  // Tạo và lưu contract mới
+  const newContract = this.contractRepo.create(createContractDto);
+  await this.contractRepo.save(newContract);
+
+  // Thêm user vào room (logic phụ thuộc vào cách bạn quản lý quan hệ giữa user và room)
+  room.users.push(user);
+  await this.roomRepo.save(room);
+
+  return room;
+}
+
+  
 
 
   async searchRoomsByTitle(

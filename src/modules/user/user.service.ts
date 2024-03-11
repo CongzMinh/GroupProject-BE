@@ -19,6 +19,9 @@ export class UserService {
   [x: string]: any;
   constructor(private userRepo: UserRepository) {}
 
+
+  
+
   createUser(createUserDto: CreateUserDto) {
     const createdUser = this.userRepo.create(createUserDto);
     return this.userRepo.save(createdUser);
@@ -29,6 +32,7 @@ export class UserService {
   }
 
   findOne(id: number) {
+
     return this.userRepo.findOneBy({ id });
   }
 
@@ -124,6 +128,5 @@ export class UserService {
       },
     });
   }
-
 
 }
