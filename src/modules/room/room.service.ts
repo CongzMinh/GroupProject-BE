@@ -91,7 +91,7 @@ export class RoomService {
       throw new BadRequestException('This room is full');
     }
 
-    if (user.contract || user.contract.room.id === room.id) {
+    if (user.contract) {
       throw new BadRequestException('User already has a contract!');
     }
 
@@ -114,7 +114,7 @@ export class RoomService {
     });
   }
 
-  async removeIssue(id: number)  {
+  async removeIssue(id: number) {
     const issue = await this.issueRepo.findOneBy({ id });
     return this.issueRepo.remove(issue);
   }

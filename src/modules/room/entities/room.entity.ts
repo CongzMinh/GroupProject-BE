@@ -81,7 +81,7 @@ export class RoomEntity {
   @OneToMany(() => ContractEntity, (contract) => contract.room, {
     cascade: ['insert'],
   })
-  @JoinColumn({ name: 'room_id' })
+  @JoinColumn()
   contracts: ContractEntity[];
 
   @OneToMany(() => PaymentEntity, (payment) => payment.room)
