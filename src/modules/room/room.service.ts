@@ -3,6 +3,7 @@ import {
   ForbiddenException,
   Injectable,
   NotFoundException,
+
 } from '@nestjs/common';
 import { UserEntity } from '../user/entities/user.entity';
 import * as fs from 'fs';
@@ -17,6 +18,7 @@ import { UserRepository } from '../user/repositories/user.repository';
 import { UserService } from '../user/user.service';
 import { RoomEntity } from './entities/room.entity';
 import { ContractRepository } from './repositories/contract.repository';
+
 
 @Injectable()
 export class RoomService {
@@ -49,10 +51,23 @@ export class RoomService {
     return room;
   }
 
-  async createRoom(request: CreateRoomDto) {
-    const room = await this.roomRepo.create(request);
-    return this.roomRepo.save(room);
+// Giả sử bạn đã inject `roomRepo` vào service này qua constructor
+
+async createRoom(request: CreateRoomDto) {
+  // Kiểm tra trùng lặp title
+  const existingRoom = await this.roomRepo.findOne({
+    where: { title: request.title },
+  });
+
+  if (existingRoom) {
+    throw new BadRequestException('Room with the same title already exists.');
   }
+
+  // Tạo phòng mới nếu không trùng title
+  const room = await this.roomRepo.create(request);
+  return this.roomRepo.save(room);
+}
+
 
   async createIssue(
     userId: number,
@@ -107,6 +122,7 @@ export class RoomService {
     return this.roomRepo.save(room);
   }
 
+
   getContract(id: number) {
     return this.contractRepo.findOne({
       where: { id },
@@ -117,5 +133,22 @@ export class RoomService {
   async removeIssue(id: number)  {
     const issue = await this.issueRepo.findOneBy({ id });
     return this.issueRepo.remove(issue);
+
+
+  async searchRoomsByTitle(
+    searchRoomDto: SearchRoomDto,
+  ): Promise<RoomEntity[]> {
+    const { title } = searchRoomDto;
+    console.log('Search Criteria:', { title: ILike(`%${title}%`) });
+
+    return this.roomRepo.find({
+      where: { title: ILike(`%${title}%`) },
+      order: {
+        id: 'ASC',
+      },
+    });
+
   }
 }
+
+

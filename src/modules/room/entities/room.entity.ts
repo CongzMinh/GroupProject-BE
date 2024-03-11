@@ -24,7 +24,7 @@ export class RoomEntity {
   id: number;
 
   @Column()
-  roomNumber: number;
+  title: string;
 
   @Column()
   capacity: number;
