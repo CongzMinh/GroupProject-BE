@@ -90,6 +90,7 @@ export class PostController {
   @Get('contract/:id')
   getContract(@Param('id') id: number) {
     return this.roomService.getContract(id);
+  }
 
   @Post('search')
   searchRoomsByTitle(
