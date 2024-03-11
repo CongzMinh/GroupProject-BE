@@ -72,12 +72,13 @@
     "pg": "^8.11.0",
     "redis": "^4.6.11",
     "reflect-metadata": "^0.1.13",
+    "run-script-webpack-plugin": "^0.2.0",
     "rxjs": "^7.2.0",
     "twilio": "^4.19.3",
     "typeorm": "^0.3.11",
     "typeorm-seeding": "^1.6.1",
     "web3": "^4.0.1",
-    "webpack": "^5.89.0",
+    "webpack": "^5.90.3",
     "yarn": "^1.22.21"
   },
   "devDependencies": {

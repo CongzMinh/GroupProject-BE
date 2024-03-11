@@ -86,11 +86,17 @@ export class PostController {
     return this.roomService.getOneById(id);
   }
 
+
+  @Get('contract/:id')
+  getContract(@Param('id') id: number) {
+    return this.roomService.getContract(id);
+
   @Post('search')
   searchRoomsByTitle(
     @Body() searchRoomDto: SearchRoomDto,
   ): Promise<RoomEntity[]> {
     return this.roomService.searchRoomsByTitle(searchRoomDto);
+
   }
 
   // @Put(':id')
@@ -164,5 +170,10 @@ export class PostController {
   @Post('create-contract')
   async createContract(@Body() createContractDto: CreateContractDto) {
     return this.roomService.addContract(createContractDto);
+  }
+
+  @Delete('issue/:id')
+  removeIssue(@Param('id') issueId: number) {
+    return this.roomService.removeIssue(issueId);
   }
 }

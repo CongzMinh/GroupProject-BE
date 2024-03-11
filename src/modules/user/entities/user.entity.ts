@@ -7,10 +7,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  JoinColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Role } from 'src/shared/enums/role.enum';
@@ -94,8 +96,10 @@ export class UserEntity {
   @OneToMany(() => IssueEntity, (issue) => issue.user)
   issues: IssueEntity[];
 
-  @OneToOne(() => ContractEntity, (contract) => contract.users)
-  @JoinColumn()
+
+  @OneToOne(() => ContractEntity, (contract) => contract.user, { cascade: ['insert'] })
+  @JoinColumn({ name: 'room_id' })
+
   contract: ContractEntity;
 
   @BeforeInsert()

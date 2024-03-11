@@ -29,7 +29,7 @@ export class UserService {
   }
 
   findOne(id: number) {
-    return this.userRepo.findOneBy({ id });
+    return this.userRepo.findOne({ where: {id: id}, relations: ['room', 'contract']});
   }
 
   findByEmail(email: string) {
