@@ -1,4 +1,4 @@
-import { UserEntity } from 'src/modules/user/entities/user.entity';
+
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -8,6 +8,7 @@ import {
   JoinTable,
 } from 'typeorm';
 import { RoomEntity } from './room.entity';
+import { UserEntity } from 'src/modules/user/entities/user.entity';
 @Entity({ name: 'issues' })
 export class IssueEntity {
   @PrimaryGeneratedColumn()

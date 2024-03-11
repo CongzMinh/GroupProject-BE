@@ -5,7 +5,9 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
+  OneToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -92,7 +94,10 @@ export class UserEntity {
   @OneToMany(() => IssueEntity, (issue) => issue.user)
   issues: IssueEntity[];
 
-  @ManyToOne(() => ContractEntity, (contract) => contract.users)
+
+  @OneToOne(() => ContractEntity, (contract) => contract.user, { cascade: ['insert'] })
+  @JoinColumn({ name: 'room_id' })
+
   contract: ContractEntity;
 
   @BeforeInsert()

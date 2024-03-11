@@ -1,4 +1,5 @@
 export class CreateRoomDto {
+
   title: string;
   capacity: number;
   area: number;
@@ -8,5 +9,5 @@ export class CreateRoomDto {
   wifi: number;
   deadline: number;
   floor: number;
-  status: string;
+  available: boolean;
 }

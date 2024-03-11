@@ -5,6 +5,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -29,6 +30,7 @@ import { CreateIssueDto } from './dto/create-issue.dto';
 import { CreateContractDto } from './dto/create-contract.dto';
 import { SearchRoomDto } from './dto/search-room.dto';
 import { RoomEntity } from './entities/room.entity';
+import { response } from 'express';
 
 @Controller('room')
 @ApiTags('Rooms')
@@ -84,11 +86,18 @@ export class PostController {
     return this.roomService.getOneById(id);
   }
 
+
+  @Get('contract/:id')
+  getContract(@Param('id') id: number) {
+    return this.roomService.getContract(id);
+  }
+
   @Post('search')
   searchRoomsByTitle(
     @Body() searchRoomDto: SearchRoomDto,
   ): Promise<RoomEntity[]> {
     return this.roomService.searchRoomsByTitle(searchRoomDto);
+
   }
 
   // @Put(':id')
@@ -138,9 +147,15 @@ export class PostController {
   // }
 
   @Post('create')
-  createRoom(@Body() createRoomDto: CreateRoomDto) {
-    return this.roomService.createRoom(createRoomDto);
+  async createRoom(@Body() createRoomDto: CreateRoomDto) {
+    try {
+      return await this.roomService.createRoom(createRoomDto);
+    } catch (error) {
+      // Xử lý và trả về lỗi phù hợp
+      return response.status(HttpStatus.BAD_REQUEST).json({ message: error.message });
+    }
   }
+  
 
   @UseGuards(JwtAuthGuard)
   @Post('create-issue/:roomId')
@@ -156,5 +171,10 @@ export class PostController {
   @Post('create-contract')
   async createContract(@Body() createContractDto: CreateContractDto) {
     return this.roomService.addContract(createContractDto);
+  }
+
+  @Delete('issue/:id')
+  removeIssue(@Param('id') issueId: number) {
+    return this.roomService.removeIssue(issueId);
   }
 }
