@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ForbiddenException,
   Injectable,
   NotFoundException,
@@ -48,10 +49,23 @@ export class RoomService {
     return room;
   }
 
-  async createRoom(request: CreateRoomDto) {
-    const room = await this.roomRepo.create(request);
-    return this.roomRepo.save(room);
+// Giả sử bạn đã inject `roomRepo` vào service này qua constructor
+
+async createRoom(request: CreateRoomDto) {
+  // Kiểm tra trùng lặp title
+  const existingRoom = await this.roomRepo.findOne({
+    where: { title: request.title },
+  });
+
+  if (existingRoom) {
+    throw new BadRequestException('Room with the same title already exists.');
   }
+
+  // Tạo phòng mới nếu không trùng title
+  const room = await this.roomRepo.create(request);
+  return this.roomRepo.save(room);
+}
+
 
   async createIssue(
     userId: number,

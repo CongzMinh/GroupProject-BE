@@ -5,8 +5,10 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -92,7 +94,8 @@ export class UserEntity {
   @OneToMany(() => IssueEntity, (issue) => issue.user)
   issues: IssueEntity[];
 
-  @ManyToOne(() => ContractEntity, (contract) => contract.users)
+  @OneToOne(() => ContractEntity, (contract) => contract.users)
+  @JoinColumn()
   contract: ContractEntity;
 
   @BeforeInsert()
