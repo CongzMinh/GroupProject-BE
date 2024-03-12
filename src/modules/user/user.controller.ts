@@ -40,9 +40,11 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.userService.findOne(id);
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  findOne(@Request() req: any) {
+    const userId = req.user.id;
+    return this.userService.findOne(userId);
   }
 
 //   @Get('uploaded/:avatarpth')
