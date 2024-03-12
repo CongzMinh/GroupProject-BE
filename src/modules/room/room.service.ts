@@ -137,18 +137,30 @@ async createRoom(request: CreateRoomDto) {
   }
 
 
- async searchRoomsByTitle(
-    searchRoomDto: SearchRoomDto,
-  ): Promise<RoomEntity[]> {
-    const { title } = searchRoomDto;
-    console.log('Search Criteria:', { title: ILike(`%${title}%`) });
+//  async searchRoomsByTitle(
+//     searchRoomDto: SearchRoomDto,
+//   ): Promise<RoomEntity[]> {
+//     const { title } = searchRoomDto;
+//     const titleSearchString  = title.toString();
+//     console.log('Search Criteria:', { title: ILike(`%${titleSearchString}%`) });
 
-    return this.roomRepo.find({
-      where: { title: ILike(`%${title}%`) },
-      order: {
-        id: 'ASC',
-      },
-    });
+//     return this.roomRepo.find({
+//       where: { title: ILike(`%${titleSearchString}%`) },
+//       order: {
+//         id: 'ASC',
+//       },
+//     });
+//   }
+
+  async searchRoomsByTitle(searchRoomDto: SearchRoomDto): Promise<RoomEntity[]> {
+    const { title } = searchRoomDto;
+    const titleSearchString = title.toString();
+  
+    return this.roomRepo
+      .createQueryBuilder("room")
+      .where("CAST(room.title AS TEXT) ILIKE :title", { title: `%${titleSearchString}%` })
+      .orderBy("room.id", "ASC")
+      .getMany();
   }
 }
 
