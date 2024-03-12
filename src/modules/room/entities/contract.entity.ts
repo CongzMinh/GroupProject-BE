@@ -1,4 +1,5 @@
 import { UserEntity } from 'src/modules/user/entities/user.entity';
+
 import {
   Column,
   Entity,
@@ -9,6 +10,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from "typeorm";
+
 import { RoomEntity } from './room.entity';
 
 @Entity({
@@ -29,6 +31,8 @@ export class ContractEntity {
   room: RoomEntity;
 
   @OneToOne(() => UserEntity, (user) => user.contract)
+
   @JoinColumn()
   user: UserEntity;
+
 }
