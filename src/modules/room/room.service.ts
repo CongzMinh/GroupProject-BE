@@ -32,7 +32,7 @@ export class RoomService {
   ) {}
 
   async getAll() {
-    const rooms = await this.roomRepo.find();
+    const rooms = await this.roomRepo.find({ relations: [ 'users']});
 
     if (!rooms) {
       throw new NotFoundException();
