@@ -24,7 +24,7 @@ export class RoomEntity {
   id: number;
 
   @Column()
-  title: string;
+  title: number;
 
   @Column()
   capacity: number;
@@ -50,7 +50,7 @@ export class RoomEntity {
   @Column()
   floor: number;
 
-  @Column({default: false})
+  @Column()
   available: boolean;
 
   @CreateDateColumn({
@@ -78,10 +78,10 @@ export class RoomEntity {
   @OneToMany(() => IssueEntity, (issue) => issue.room)
   issues: IssueEntity[];
 
-  @OneToMany(() => ContractEntity, (contract) => contract.room, 
-    { cascade: ['insert'] },
-  )
-  @JoinColumn({ name: 'room_id' })
+  @OneToMany(() => ContractEntity, (contract) => contract.room, {
+    cascade: ['insert'],
+  })
+  @JoinColumn()
   contracts: ContractEntity[];
 
   @OneToMany(() => PaymentEntity, (payment) => payment.room)
