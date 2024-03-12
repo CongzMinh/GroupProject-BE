@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsPhoneNumber,
 } from 'class-validator';
+import { Gender } from 'src/shared/enums/gender.enum';
 import { Role } from 'src/shared/enums/role.enum';
 
 export class CreateUserDto {
@@ -19,9 +20,21 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 
-  @IsOptional()
+  @IsNotEmpty()
+  Student_ID: string;
+
+  @IsNotEmpty()
   @IsPhoneNumber()
   phoneNumber: string;
+
+  @IsNotEmpty()
+  DoB: string;
+
+  @IsNotEmpty()
+  year_start: number;
+
+  @IsNotEmpty()
+  year_graduated: number;
 
   @ApiProperty({
     description: 'Password in plain text',
@@ -31,7 +44,9 @@ export class CreateUserDto {
   password: string;
 
   @IsNotEmpty()
-  isHost: boolean;
+  isHost:boolean;
+  role: Role; 
 
-  role: Role;
+  @IsNotEmpty()
+  gender: Gender;
 }

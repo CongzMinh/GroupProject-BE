@@ -5,13 +5,12 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinTable,
+  JoinColumn,
   ManyToOne,
   OneToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  JoinColumn,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Role } from 'src/shared/enums/role.enum';
@@ -45,8 +44,14 @@ export class UserEntity {
   @Expose()
   phoneNumber?: string;
 
+  @Column()
+  DoB: string;
+
+  @Column()
+  Student_ID: string;
+
   @Column({
-    nullable: true,
+  nullable: true,
   })
   @Expose()
   password: string;
@@ -68,8 +73,6 @@ export class UserEntity {
     name: 'is_locked',
     default: false,
   })
-  @Expose()
-  isLocked: boolean;
 
   @CreateDateColumn({
     name: 'created_at',
@@ -80,24 +83,21 @@ export class UserEntity {
   @UpdateDateColumn({
     name: 'updated_at',
   })
+
   @Expose()
   updatedAt: Date;
 
-  @DeleteDateColumn({
-    name: 'deleted_at',
-  })
-  @Expose()
-  deletedAt?: Date;
 
   @ManyToOne(() => RoomEntity, (room) => room.users)
   room: RoomEntity;
 
   @OneToMany(() => IssueEntity, (issue) => issue.user)
-  @JoinTable()
   issues: IssueEntity[];
+
 
   @OneToOne(() => ContractEntity, (contract) => contract.user, { cascade: ['insert'] })
   @JoinColumn({ name: 'room_id' })
+
   contract: ContractEntity;
 
   @BeforeInsert()
