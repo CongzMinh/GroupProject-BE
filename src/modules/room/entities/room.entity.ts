@@ -72,7 +72,13 @@ export class RoomEntity {
   deletedAt?: Date;
 
   @OneToMany(() => UserEntity, (user) => user.room, { nullable: true })
-  @Transform(({ obj }) => obj.users?.map((user) => user.id))
+  @Transform(({ obj }) => obj.users.map((user) => ({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    phoneNumber: user.phoneNumber,
+  })))
+  @JoinColumn()
   users: UserEntity[];
 
   @OneToMany(() => IssueEntity, (issue) => issue.room)

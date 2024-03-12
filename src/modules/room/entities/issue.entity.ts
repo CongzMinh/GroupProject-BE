@@ -21,6 +21,7 @@ export class IssueEntity {
   fixed: boolean;
 
   @ManyToOne(() => UserEntity, (user) => user.issues)
+  @JoinTable()
   user: UserEntity;
 
   @ManyToOne(() => RoomEntity, (room) => room.issues)
