@@ -27,6 +27,7 @@ import { RoomService } from './room.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { CreateIssueDto } from './dto/create-issue.dto';
 import { CreateContractDto } from './dto/create-contract.dto';
+import { CreatePaymentDto } from './dto/create-payment.dto';
 
 @Controller('room')
 @ApiTags('Rooms')
@@ -157,5 +158,13 @@ export class PostController {
   @Delete('issue/:id')
   removeIssue(@Param('id') issueId: number) {
     return this.roomService.removeIssue(issueId);
+  }
+
+  @Post('create-payment/:id')
+  async createPayment(
+    @Body() createPaymentDto: CreatePaymentDto,
+    @Param('id') roomId: number,
+  ) {
+    return await this.roomService.addPayment(createPaymentDto, roomId);
   }
 }

@@ -17,6 +17,9 @@ import { UserRepository } from '../user/repositories/user.repository';
 import { UserService } from '../user/user.service';
 import { RoomEntity } from './entities/room.entity';
 import { ContractRepository } from './repositories/contract.repository';
+import { PaymentRepository } from './repositories/payment.repository';
+import { CreatePaymentDto } from './dto/create-payment.dto';
+import { Cron } from '@nestjs/schedule';
 
 @Injectable()
 export class RoomService {
@@ -26,6 +29,7 @@ export class RoomService {
     private userService: UserService,
     private userRepo: UserRepository,
     private contractRepo: ContractRepository,
+    private paymentRepo: PaymentRepository,
   ) {}
 
   async getAll() {
@@ -118,4 +122,42 @@ export class RoomService {
     const issue = await this.issueRepo.findOneBy({ id });
     return this.issueRepo.remove(issue);
   }
+
+  async addPayment(
+    createPaymentDto: CreatePaymentDto,
+    roomId: number,
+  ): Promise<RoomEntity> {
+    const room = await this.roomRepo.findOne({
+      where: { id: roomId },
+      relations: ['payments'],
+    });
+
+    if (!room) {
+      throw new NotFoundException(`Room with id ${roomId} not found`);
+    }
+
+    const newPayment = this.paymentRepo.create(createPaymentDto);
+    newPayment.room = room;
+    newPayment.paymentDate = new Date();
+    room.isPaid = true;
+
+
+    await this.paymentRepo.save(newPayment);
+
+    room.payments.push(newPayment);
+
+    return this.roomRepo.save(room);
+  }
+
+  @Cron('0 0 1 * *')
+  async updatePaymentStatusForAllRooms(): Promise<void> {
+    // Get all rooms and update payment status to false
+    const rooms = await this.roomRepo.find();
+    rooms.forEach(async (room) => {
+      room.isPaid = false;
+      await this.roomRepo.save(room);
+    });
+  }
 }
+
+
