@@ -65,6 +65,9 @@ export class RoomEntity {
   @Expose()
   updatedAt: Date;
 
+  @Column({ default: false }) // Assuming default is not paid
+  isPaid: boolean;
+
   @DeleteDateColumn({
     name: 'deleted_at',
   })
