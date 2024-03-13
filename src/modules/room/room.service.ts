@@ -176,7 +176,7 @@ async createRoom(request: CreateRoomDto) {
       room.isPaid = false;
       await this.roomRepo.save(room);
     });
-
+  }
 
 //  async searchRoomsByTitle(
 //     searchRoomDto: SearchRoomDto,
